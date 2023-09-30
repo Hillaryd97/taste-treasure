@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import RecipeCard from "./components/RecipeCard";
+import AddRecipe from "./pages/AddRecipe";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       <Route path="/register" element={<Register />} />
       <Route path="/home" element={<Home />} />
       <Route path="/recipeCard" element={<RecipeCard />} />
+      <Route path="/add-recipe" element={<AddRecipe />} />
     </Route>
   )
 );

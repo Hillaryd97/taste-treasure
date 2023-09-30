@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { supabase } from "../createClient";
+import { Link, useNavigate } from "react-router-dom";
 import img9 from "../assets/img (10).jpeg";
 import img10 from "../assets/img (13).jpeg";
 import {
@@ -7,8 +8,60 @@ import {
   BsTelephoneFill,
   BsFacebook,
 } from "react-icons/bs";
+import { useState, useEffect } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const handleInputChange = (e, field) => {
+    const updatedFormData = { ...formData };
+    updatedFormData[field] = e.target.value;
+    setFormData(updatedFormData);
+  };
+
+  const [user, setUser] = useState(null); // Use null instead of false to represent no user
+
+  // When the user logs in successfully, save user data in sessionStorage
+  const handleSuccessfulLogin = (userData) => {
+    sessionStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  useEffect(() => {
+    // Retrieve user data from sessionStorage when the component mounts
+    const storedUserData = sessionStorage.getItem("user");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      setUser(userData);
+    }
+  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) {
+        console.error("Error logging in:", error);
+        // Handle login error (e.g., display an error message)
+      } else {
+        console.log("User logged in successfully:", data);
+        handleSuccessfulLogin(data); // Save user data in sessionStorage
+        navigate("/home"); // Redirect to the home page
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      // Handle login error (e.g., display an error message)
+    }
+  };
+
   return (
     <div className="min-h-screen overflow-hidden bg-background">
       <div className="relative">
@@ -36,17 +89,24 @@ const Login = () => {
             Connect with <span className="text-primary">friends</span> and
             exchange recipes!
           </p>
-          <div className="flex flex-col w-2/5 p-16 rounded-md shadow-md border-t border-t-primary mt-8">
+          <form
+            className="flex flex-col w-2/5 p-16 rounded-md shadow-md border-t border-t-primary mt-8"
+            onSubmit={handleSubmit}
+          >
             <div className="flex flex-col space-y-4">
               <input
                 type="text"
                 className="rounded-full border px-4 py-1.5 w-full duration-300 bg-gray-50 focus:outline-none focus:bg-secondary placeholder:focus:text-white"
-                placeholder="Email "
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => handleInputChange(e, "email")}
               />
               <input
-                type="text"
+                type="password"
                 className="rounded-full border px-4 py-1.5 w-full duration-300 bg-gray-50 focus:outline-none focus:bg-secondary placeholder:focus:text-white"
                 placeholder="Password"
+                value={formData.password}
+                onChange={(e) => handleInputChange(e, "password")}
               />
               <button
                 type="submit"
@@ -55,10 +115,16 @@ const Login = () => {
                 LOGIN
               </button>
               <p className="text-center pt-2 font-bold">
-                Not a user? <Link to={"/register"} className="text-primary hover:text-opacity-75">Register</Link>
+                Not a user?{" "}
+                <Link
+                  to={"/register"}
+                  className="text-primary hover:text-opacity-75"
+                >
+                  Register
+                </Link>
               </p>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <div className="container mx-auto px-2 md:px-0 ">

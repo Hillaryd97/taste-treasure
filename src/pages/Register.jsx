@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { supabase } from "../createClient";
+import { Link, useNavigate } from "react-router-dom";
 import img9 from "../assets/img (10).jpeg";
 import img10 from "../assets/img (13).jpeg";
 import {
@@ -7,8 +8,59 @@ import {
   BsTelephoneFill,
   BsFacebook,
 } from "react-icons/bs";
+import { useEffect, useState } from "react";
 
 const Register = () => {
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e, field) => {
+    const updatedFormData = { ...formData };
+    updatedFormData[field] = e.target.value;
+    setFormData(updatedFormData);
+  };
+  console.log(formData);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Insert the new user data into the Supabase user table
+      const { user, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) {
+        console.error("Error registering user:", error);
+        // Handle registration error (e.g., display an error message)
+      } else {
+        console.log("User registered successfully:", user);
+        setRegistrationSuccess(true);
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      // Handle registration error (e.g., display an error message)
+    }
+  };
+  useEffect(() => {
+    if (registrationSuccess) {
+      const redirectTimer = setTimeout(() => {
+        // Set shouldRedirect to true after 3 seconds
+        navigate("/login"); // Redirect to the login page
+      }, 3000);
+
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [registrationSuccess, navigate]);
+
+
   return (
     <div className="min-h-screen overflow-hidden bg-background">
       <div className="relative">
@@ -36,17 +88,31 @@ const Register = () => {
             Connect with <span className="text-primary">friends</span> and
             exchange recipes!
           </p>
-          <div className="flex flex-col w-2/5 p-16 rounded-md shadow-md border-t border-t-primary mt-8 ">
+          {registrationSuccess && (
+            <div className="text-green-500 mt-4">
+              Registration successful! Please check your email for the
+              verification link.
+            </div>
+          )}
+
+          <form
+            className="flex flex-col w-2/5 p-16 rounded-md shadow-md border-t border-t-primary mt-8 "
+            onSubmit={handleSubmit}
+          >
             <div className="flex flex-col space-y-4">
               <input
                 type="text"
                 className="rounded-full border px-4 py-1.5 w-full duration-300 bg-gray-50 focus:outline-none focus:bg-secondary placeholder:focus:text-white"
-                placeholder="Email "
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => handleInputChange(e, "email")}
               />
               <input
-                type="text"
+                type="password"
                 className="rounded-full border px-4 py-1.5 w-full duration-300 bg-gray-50 focus:outline-none focus:bg-secondary placeholder:focus:text-white"
                 placeholder="Password"
+                value={formData.password}
+                onChange={(e) => handleInputChange(e, "password")}
               />
               <button
                 type="submit"
@@ -64,7 +130,7 @@ const Register = () => {
                 </Link>
               </p>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <div className="container mx-auto px-2 md:px-0 ">

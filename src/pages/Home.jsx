@@ -9,8 +9,9 @@ import PropTypes from "prop-types";
 import MealCard from "../components/MealCard";
 import MostLikedCard from "../components/MostLikedCard";
 import IngredientCard from "../components/IngredientCard";
+import { supabase } from "../createClient";
 import Nav from "../components/Nav";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const categories = [
   "Japanese",
   "American",
@@ -23,9 +24,26 @@ const categories = [
 
 const Home = (props) => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    // Fetch recipes data from the "recipes" table
+    async function fetchRecipes() {
+      const { data, error } = await supabase.from("userRecipes").select("*"); // You can specify columns you want to select here
+
+      if (error) {
+        console.error("Error fetching recipes:", error);
+      } else {
+        setRecipes(data);
+      }
+    }
+
+    fetchRecipes();
+  }, []); // Run this effect once on component mount
+  // const ingredientsString = recipes.ingredients.join(", ");
   return (
     <div className="min-h-screen overflow-hidden bg-purple-50">
-      <div className="container md:mx-auto md:px-0 px-2 py-4">
+      <div className="container md:mx-auto px-2 py-4">
         <Nav />
         <div className="flex flex-col justify-center">
           <div className="flex flex-col justify-center items-center pb-8">
@@ -95,57 +113,40 @@ const Home = (props) => {
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mt-4">
-            <div className="flex flex-col w-full z-10 p-3 rounded-sm col-span-3 items-center lg:col-span-2">
-              <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 w-full justify-between md:mt-8">
-                <MealCard
-                  image={img1}
-                  userName={"Gojo Satoru"}
-                  category={"Breakfast"}
-                  recipe_name={"Strawberry Mochi"}
-                />
-                <MealCard
-                  image={img5}
-                  userName={"Hatake Kakashi"}
-                  category={"Lunch"}
-                  recipe_name={"Ramen "}
-                />
-                <MealCard
-                  image={img7}
-                  userName={"Uchiha Itachi"}
-                  category={"Dairy Free"}
-                  recipe_name={"Dango"}
-                />
-                <MealCard
-                  image={img6}
-                  userName={"Jung Hoseok"}
-                  category={"Vegan"}
-                  recipe_name={"Hotteok Pancakes"}
-                />
-                <MealCard
-                  image={img6}
-                  userName={"Nanami Kento"}
-                  category={"Vegan"}
-                  recipe_name={"Sushi"}
-                />
-                <MealCard
-                  image={img5}
-                  userName={"Kim Namjoon"}
-                  category={"Lunch"}
-                  recipe_name={"Bibimbap "}
-                />
-                <MealCard
-                  image={img7}
-                  userName={"Uchiha Itachi"}
-                  category={"Dairy Free"}
-                  recipe_name={"Natto"}
-                />
-                <MealCard
-                  image={img1}
-                  userName={"Gojo Satoru"}
-                  category={"Breakfast"}
-                  recipe_name={"Spaghetti Bolognese"}
-                />
-              </div>
+            <div className="flex flex-col w-full z-10 p-3 rounded-sm col-span-3   lg:col-span-2">
+              {recipes.map((recipe) => (
+                <div className="mb-2 bg-blue-100 p-2">
+                  <div>
+                    <h4 className="font-bold pb-1 pt-3">
+                      {recipe.recipeName}
+                    </h4>
+                  </div>
+                  <div className="mt-2 text-gray-600">
+                    <p className="text-sm font-semibold">Ingredients:</p>
+                    <p>{ recipe.ingredients.join(", ")}</p>
+                  </div>
+                  <div className="flex justify-end items-center w-full py-1">
+                    <Link
+                      to={"/recipeCard"}
+                      className="hover:bg-opacity-80 rounded-full bg-primary py-0.5 px-3 text-white"
+                    >
+                      View
+                    </Link>
+                    <button className="hover:bg-opacity-80 rounded-full bg-red-500 py-0.5 px-3 text-white ml-2">
+                      Like
+                    </button>
+                  </div>
+                  <div>
+                    <p className="text-sm md:text-center pb-0.5 pr-1">
+                      By{" "}
+                      <span className="font-bold text-primary">
+                        {recipe.userName}
+                      </span>{" "}
+                      in <span className="">{recipe.category}</span>
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="hidden lg:flex flex-col w-full z-10 space-y-4  mt-8 col-span-1">
               <div className="bg-white  py-4 rounded-sm shadow-md">

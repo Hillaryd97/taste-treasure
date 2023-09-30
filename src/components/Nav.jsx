@@ -1,11 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react"; // Import useState
+import { supabase } from "../createClient";
 
 const Nav = () => {
   const [isNavOpen, setIsNavOpen] = useState(false); // Initialize state for the navbar
+  const navigate = useNavigate();
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen); // Toggle the navbar state
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Sign out the user from Supabase
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error("Error logging out:", error);
+        // Handle logout error (e.g., display an error message)
+      } else {
+        console.log("User logged out successfully");
+        // Clear user session data from sessionStorage
+        sessionStorage.removeItem("user");
+
+        // Redirect the user to the login page or any other desired location
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+      // Handle logout error (e.g., display an error message)
+    }
   };
 
   return (
@@ -42,15 +66,27 @@ const Nav = () => {
             </button>
           </div>
           <div className="hidden lg:flex space-x-3 md:space-x-4 items-center z-10">
-            <Link to={"/profile"} className="text-black font-bold hover:text-primary">
+          <Link
+              to={"/home"}
+              className="text-black font-bold hover:text-primary"
+            >
+              Home
+            </Link>
+            <Link
+              to={"/profile"}
+              className="text-black font-bold hover:text-primary"
+            >
               Profile
             </Link>
-            <Link to={"/add-recipe"} className="text-black font-bold hover:text-primary">
+            <Link
+              to={"/add-recipe"}
+              className="text-black font-bold hover:text-primary"
+            >
               Add Recipe
             </Link>
             <Link
-              to={"/logout"}
-              className="text-white bg-red-600 rounded-full shadow-md font-bold px-4 py-2 hover:shadow-none duration-300"
+              onClick={handleLogout}
+              className="text-white bg-red-500 hover:opacity-80 focus:scale-95 rounded-full shadow-md font-bold px-4 py-2 hover:shadow-none duration-300"
             >
               LOGOUT
             </Link>
@@ -93,8 +129,8 @@ const Nav = () => {
             </Link>
           </li>
           <li>
-          <Link
-              to={"/logout"}
+            <Link
+              onClick={handleLogout}
               className="hover:text-white hover:bg-red-600 text-red-600 tracking-wider border-t border-b border-black mt-9 font-bold block py-2 px-4 hover:shadow-none duration-300"
             >
               LOGOUT
