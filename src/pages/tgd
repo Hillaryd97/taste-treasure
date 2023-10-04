@@ -1,0 +1,83 @@
+     {apiRecipes.map((recipe) => (
+                      <Link
+                        to={`/recipe/${recipe.idMeal}`} // Use the appropriate recipe ID property
+                        key={recipe.idMeal}
+                        className="bg-white shadow-lg rounded-lg overflow-hidden mb-4 flex flex-col"
+                      >
+                        <div className="bg-primary text-white py-2 px-4 flex justify-between items-center">
+                          <h2 className="text-xl font-semibold">
+                            {recipe.strMeal}
+                          </h2>
+                          <p>{/* Add timeNeeded here */}</p>
+                        </div>
+                        <div className="px-4 py-2">
+                          <div className="text-gray-600">
+                            {formatMarkdown(
+                              (recipe.strInstructions || "No Description")
+                                .split("\n")
+                                .map((description, index) => {
+                                  if (index === 0) {
+                                    if (description.length > 120) {
+                                      return `${description.slice(0, 120)}...`;
+                                    } else {
+                                      return description;
+                                  
+                                    }}
+                                })
+                                .join("")
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="px-4 py-2">
+                          <h4 className="text-lg font-semibold">
+                            Ingredients:
+                          </h4>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                          <span
+                                className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                              >
+                                {recipe.strIngredient1}
+                              </span>
+                              <span
+                                className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                              >
+                                {recipe.strIngredient2}
+                              </span>
+                              <span
+                                className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                              >
+                                {recipe.strIngredient3}
+                              </span>
+                              <span
+                                className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                              >
+                                {recipe.strIngredient4}
+                              </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between px-4 py-2 flex-row-reverse">
+                          <div className="flex space-x-3">
+                            {" "}
+                            <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 duration-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                              View
+                            </button>
+                            <button className="bg-red-500 flex items-center hover:bg-red-700 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                              <AiFillHeart size={20} className="mr-2" /> Love
+                            </button>
+                          </div>
+                          <div className="py-2">
+                            <p className="text-sm text-gray-600">
+                              By{" "}
+                              <span className="font-semibold text-primary">
+                                {/* Add userName here */}
+                              </span>{" "}
+                              in{" "}
+                              <span className="text-gray-600">
+                                {/* Add category here */}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
