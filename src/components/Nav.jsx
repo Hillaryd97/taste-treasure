@@ -55,7 +55,7 @@ const Nav = () => {
               <div className="w-6 h-1 bg-primary"></div>
             </button>
           </div>
-          <div className="hidden lg:block drop-shadow-sm">
+          {/* <div className="hidden lg:block drop-shadow-sm">
             <input
               className="w-72 border p-1 px-2 bg-gray-100 border-primary rounded-xl rounded-r-none focus:outline-none focus:bg-secondary duration-300 placeholder:focus:text-white"
               type="text"
@@ -64,7 +64,7 @@ const Nav = () => {
             <button className="bg-primary border border-primary rounded-xl rounded-l-none text-white py-1 px-2 hover:bg-opacity-80 duration-300">
               Search
             </button>
-          </div>
+          </div> */}
           <div className="hidden lg:flex space-x-3 md:space-x-4 items-center z-10">
           <Link
               to={"/home"}

@@ -10,6 +10,8 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import RecipeCard from "./components/RecipeCard";
 import AddRecipe from "./pages/AddRecipe";
+import RecipeDetails from "./pages/recipe/RecipeDetails";
+import ExternalRecipes from "./pages/other_recipes/ExternalRecipes";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +22,9 @@ const router = createBrowserRouter(
       <Route path="/home" element={<Home />} />
       <Route path="/recipeCard" element={<RecipeCard />} />
       <Route path="/add-recipe" element={<AddRecipe />} />
+      <Route path="/recipe/:recipe_id" element={<RecipeDetails />} />
+      <Route path="/other_recipes/:idMeal" element={<ExternalRecipes />} />
+
     </Route>
   )
 );
