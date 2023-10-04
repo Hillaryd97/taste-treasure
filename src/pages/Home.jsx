@@ -177,6 +177,7 @@ const Home = (props) => {
       setSearchResultsVisible(results.length > 0);
     }
   };
+  const sessionData = sessionStorage.getItem("user");
 
   function formatMarkdown(text) {
     // Replace double asterisks or underscores with bold tags
@@ -191,6 +192,32 @@ const Home = (props) => {
     return text;
   }
 
+  const handleSaveClick = async (recipe_id, userId) => {
+    try {
+      // Send a POST request to the 'recipeLikes' table
+      const { data, error } = await supabase.from('recipelikes').upsert([
+        {
+          recipeid: recipe_id,
+          userid: userId,
+        },
+      ]);
+  
+      if (error) {
+        console.error('Error saving recipe:', error);
+
+        // Handle the error as needed (e.g., show an error message)
+      } else {
+        // Recipe saved successfully
+        console.log('Recipe saved:', data);
+        alert("Saved!")
+        // You can update the UI to reflect that the recipe has been saved, if needed
+      }
+    } catch (error) {
+      console.error('Error saving recipe:', error);
+      // Handle the error as needed (e.g., show an error message)
+    }
+  };
+  
   const [viewUserRecipes, setViewUserRecipes] = useState(true);
 
   return (
@@ -551,11 +578,13 @@ const Home = (props) => {
                           <div className="flex justify-between px-4 py-2 flex-row-reverse">
                             <div className="flex space-x-3">
                               {" "}
-                              <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 duration-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                              {/* <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 duration-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 View
-                              </button>
-                              <button className="bg-red-500 flex items-center hover:bg-red-700 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                <AiFillHeart size={20} className="mr-2" /> Love
+                              </button> */}
+                              <button
+                              onClick={() => handleSaveClick(recipe.recipe_id, JSON.parse(sessionData).user.email)}
+                              className="bg-red-500 flex items-center hover:bg-red-700 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                <AiFillHeart size={20} className="mr-2" /> Save
                               </button>
                             </div>
                             <div className="py-2">

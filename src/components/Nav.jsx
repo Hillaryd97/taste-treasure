@@ -31,7 +31,9 @@ const Nav = () => {
       // Handle logout error (e.g., display an error message)
     }
   };
-
+  const sessionData = sessionStorage.getItem("user");
+  // const userEmail = JSON.parse(sessionData).user.email;
+ 
   return (
     <div className="relative">
       <div className="container md:mx-auto md:px-0 px-2 py-4">
@@ -66,18 +68,22 @@ const Nav = () => {
             </button>
           </div> */}
           <div className="hidden lg:flex space-x-3 md:space-x-4 items-center z-10">
-          <Link
+            <Link
               to={"/home"}
               className="text-black font-bold hover:text-primary"
             >
               Home
             </Link>
-            <Link
-              to={"/profile"}
-              className="text-black font-bold hover:text-primary"
-            >
-              Profile
-            </Link>
+            {sessionData ? (
+              <Link
+                to={"/profile"}
+                className="text-black font-bold hover:text-primary"
+              >
+                Profile
+              </Link>
+            ) : (
+              <span className="text-gray-400 font-bold cursor-not-allowed">Profile</span>
+            )}
             <Link
               to={"/add-recipe"}
               className="text-black font-bold hover:text-primary"

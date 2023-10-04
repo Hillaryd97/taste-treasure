@@ -125,6 +125,8 @@ const Login = () => {
               </p>
             </div>
           </form>
+          <Link to={"/home"} className="text-white mt-3 bg-gray-600 px-2 py-1 rounded-xl">Go Home</Link>
+
         </div>
       </div>
       <div className="container mx-auto px-2 md:px-0 ">
