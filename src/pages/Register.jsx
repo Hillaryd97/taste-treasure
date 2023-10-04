@@ -96,7 +96,7 @@ const Register = () => {
           )}
 
           <form
-            className="flex flex-col w-2/5 p-16 rounded-md shadow-md border-t border-t-primary mt-8 "
+            className="flex flex-col w-2/5 lg:w-2/5 w-full z-30 bg-background p-16 rounded-md shadow-md border-t border-t-primary mt-8 "
             onSubmit={handleSubmit}
           >
             <div className="flex flex-col space-y-4">
@@ -131,6 +131,8 @@ const Register = () => {
               </p>
             </div>
           </form>
+          <Link to={"/home"} className="text-white mt-3 bg-gray-600 px-2 py-1 rounded-xl">Go Home</Link>
+
         </div>
       </div>
       <div className="container mx-auto px-2 md:px-0 ">

@@ -90,7 +90,7 @@ const Login = () => {
             exchange recipes!
           </p>
           <form
-            className="flex flex-col w-2/5 p-16 rounded-md shadow-md border-t border-t-primary mt-8"
+            className="flex flex-col lg:w-2/5 w-full z-30 bg-background p-16 rounded-md shadow-md border-t border-t-primary mt-8"
             onSubmit={handleSubmit}
           >
             <div className="flex flex-col space-y-4">

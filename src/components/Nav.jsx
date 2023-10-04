@@ -33,7 +33,7 @@ const Nav = () => {
   };
   const sessionData = sessionStorage.getItem("user");
   // const userEmail = JSON.parse(sessionData).user.email;
- 
+
   return (
     <div className="relative">
       <div className="container md:mx-auto md:px-0 px-2 py-4">
@@ -82,7 +82,9 @@ const Nav = () => {
                 Profile
               </Link>
             ) : (
-              <span className="text-gray-400 font-bold cursor-not-allowed">Profile</span>
+              <span className="text-gray-400 font-bold cursor-not-allowed">
+                Profile
+              </span>
             )}
             <Link
               to={"/add-recipe"}
@@ -117,17 +119,23 @@ const Nav = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/profile"
-              onClick={toggleNav}
-              className="block py-2 px-4 hover:bg-primary hover:text-white transition duration-300"
-            >
-              View Profile
-            </Link>
+            {sessionData ? (
+              <Link
+                to="/profile"
+                onClick={toggleNav}
+                className="block py-2 px-4 hover:bg-primary hover:text-white transition duration-300"
+              >
+                View Profile
+              </Link>
+            ) : (
+              <span className="text-gray-400 font-bold cursor-not-allowed block py-2 px-4 hover:bg-primary hover:text-white transition duration-300">
+                View Profile
+              </span>
+            )}
           </li>
           <li>
             <Link
-              to="/addRecipe"
+              to="/add-recipe"
               onClick={toggleNav}
               className="block py-2 px-4 hover:bg-primary hover:text-white transition duration-300"
             >

@@ -269,7 +269,7 @@ const Profile = () => {
           <h2 className="font-bold text-xl lg:text-2xl text-center py-5">
             Saved Recipes
           </h2>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6">
             {savedRecipes?.length > 0 ? (
               savedRecipes.map((recipe) => (
                 <div
