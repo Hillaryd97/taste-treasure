@@ -67,7 +67,7 @@ const NavLanding = () => {
         <ul className="pt-16 pb-4 pl-4 text-black text-lg">
           <li>
             <Link
-              to="/"
+              to="/register"
               onClick={toggleNav}
               className="block py-2 px-4 hover:bg-primary hover:text-white transition duration-300"
             >
@@ -76,7 +76,7 @@ const NavLanding = () => {
           </li>
           <li>
             <Link
-              to="/about"
+              to="/login"
               onClick={toggleNav}
               className="block py-2 px-4 hover:bg-primary hover:text-white transition duration-300"
             >

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "../createClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const RecipeForm = () => {
@@ -15,6 +15,8 @@ const RecipeForm = () => {
     timeNeeded: "",
   });
 
+  const navigate = useNavigate();
+
   const categories = [
     "African",
     "American",
@@ -27,6 +29,7 @@ const RecipeForm = () => {
     "Cocktail",
     "Dessert",
     "Dinner",
+    "Drinks",
     "Gourmet",
     "Grill",
     "Healthy",
@@ -38,6 +41,7 @@ const RecipeForm = () => {
     "Mediterranean",
     "Mexican",
     "Nigerian",
+    "Noodles",
     "Pasta",
     "Pizza",
     "Salad",
@@ -129,6 +133,8 @@ const RecipeForm = () => {
       } else {
         console.log("Recipe inserted successfully:", data);
         alert("Your recipe has been posted!");
+        navigate("/home"); // Redirect to the add recipe page
+
         // Optionally, you can redirect the user or perform other actions after successful insertion.
       }
     } catch (error) {
@@ -277,22 +283,23 @@ const RecipeForm = () => {
               </div>
             </div>
             <div className="mt-4">
-      <label className="block text-gray-600 mb-1" htmlFor="ingredients">
-        Ingredients (Enter each ingredient on a new line, max 30 characters per ingredient)
-      </label>
-      <textarea
-        id="ingredients"
-        value={formData.ingredients}
-        onChange={(e) => handleInputChange(e, "ingredients")}
-        rows="5"
-        placeholder="What ingredients are needed?"
-        className="w-full h-24 px-3 py-2 border rounded-lg resize-none"
-      ></textarea>
-      <div className="text-sm text-gray-400 mt-1">
-        {showCharacterLimitMessage(formData.ingredients)}
-        {/* {characterCount} */}
-      </div>
-    </div>
+              <label className="block text-gray-600 mb-1" htmlFor="ingredients">
+                Ingredients (Enter each ingredient on a new line, max 30
+                characters per ingredient)
+              </label>
+              <textarea
+                id="ingredients"
+                value={formData.ingredients}
+                onChange={(e) => handleInputChange(e, "ingredients")}
+                rows="5"
+                placeholder="What ingredients are needed?"
+                className="w-full h-24 px-3 py-2 border rounded-lg resize-none"
+              ></textarea>
+              <div className="text-sm text-gray-400 mt-1">
+                {showCharacterLimitMessage(formData.ingredients)}
+                {/* {characterCount} */}
+              </div>
+            </div>
             <div className="mt-4">
               <label
                 className="block text-gray-600 mb-1"

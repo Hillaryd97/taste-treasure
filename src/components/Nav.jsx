@@ -1,14 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react"; // Import useState
+import { useState, useRef, useEffect } from "react"; // Import useState
 import { supabase } from "../createClient";
 
 const Nav = () => {
   const [isNavOpen, setIsNavOpen] = useState(false); // Initialize state for the navbar
   const navigate = useNavigate();
+  const navRef = useRef(null);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen); // Toggle the navbar state
   };
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setIsNavOpen(false);
+      }
+    };
+
+    // Add event listener for clicks outside of the navigation menu
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -24,7 +41,7 @@ const Nav = () => {
         sessionStorage.removeItem("user");
 
         // Redirect the user to the login page or any other desired location
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -104,6 +121,7 @@ const Nav = () => {
 
       {/* Sidebar Navigation */}
       <div
+        ref={navRef}
         className={`lg:hidden fixed top-0 right-0 h-full w-64 bg-secondary overflow-y-auto transform ${
           isNavOpen ? "translate-x-0" : "translate-x-full"
         } z-20 transition-transform ease-in-out duration-300`}

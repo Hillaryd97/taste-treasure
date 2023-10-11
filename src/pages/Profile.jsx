@@ -26,7 +26,8 @@ const Profile = () => {
       const { data, error } = await supabase
         .from("recipelikes")
         .select("*")
-        .eq("userid", userEmail);
+        .eq("userid", userEmail)
+        .order('created_at', { ascending: false });
 
       if (error) {
         console.error("Error fetching recipes:", error);

@@ -21,6 +21,7 @@ const RecipeDetails = () => {
     ingredients: [],
     timeNeeded: "",
   });
+  const sessionData = sessionStorage.getItem("user");
 
   const { recipe_id } = useParams();
 
@@ -36,16 +37,19 @@ const RecipeDetails = () => {
 
     return text;
   }
-
+  
   const formattedInstructions = recipe.instructions
-    .split("\n")
-    .map((instruction, index) => {
-      // Add a line break before each numbered step
-      return index === 0 ? instruction : `<br/>${instruction}`;
-    })
-    .join("");
-
-  // Use the formattedInstructions in your component
+  .split("\n")
+  .map((instruction, index) => {
+    // Remove leading and trailing whitespace and check if the instruction is not already numbered
+    if (instruction.trim() && !/^\d+\.\s+/.test(instruction)) {
+      // If it's not numbered and not empty, add a bullet point (•)
+      return `• ${instruction}<br/>`;
+    }
+    // If it's already numbered or empty, leave it as is
+    return `${instruction}<br/>`;
+  })
+  .join("");
 
   // Fetch recipe data from Supabase
   useEffect(() => {
@@ -54,7 +58,7 @@ const RecipeDetails = () => {
         const { data, error } = await supabase
           .from("userRecipes")
           .select("*")
-          .eq("recipe_id", recipe_id); // Remove the `${}` as recipe_id is already a string
+          .eq("recipe_id", recipe_id);
 
         if (error) {
           console.error("Error fetching recipe data:", error);
@@ -62,7 +66,6 @@ const RecipeDetails = () => {
         }
 
         if (data && data.length > 0) {
-          // Assuming you only fetch one recipe for this example
           const fetchedRecipe = data[0];
           setRecipe({
             image: fetchedRecipe.image_url,
@@ -94,6 +97,32 @@ const RecipeDetails = () => {
 
   const randomImage =
     backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+
+  const handleSaveClick = async (recipe_id, userId) => {
+    try {
+      // Send a POST request to the 'recipeLikes' table
+      const { data, error } = await supabase.from("recipelikes").upsert([
+        {
+          recipeid: recipe_id,
+          userid: userId,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error saving recipe:", error);
+
+        // Handle the error as needed (e.g., show an error message)
+      } else {
+        // Recipe saved successfully
+        console.log("Recipe saved:", data);
+        alert("Saved!");
+        // You can update the UI to reflect that the recipe has been saved, if needed
+      }
+    } catch (error) {
+      console.error("Error saving recipe:", error);
+      // Handle the error as needed (e.g., show an error message)
+    }
+  };
 
   return (
     <div>
@@ -128,8 +157,13 @@ const RecipeDetails = () => {
                 in <span className="">{recipe.category}</span>
               </p>
             </div>
-            <button className="hover:bg-opacity-80 rounded-full bg-red-600 tracking-wide w-fit h-fit py-2 px-4 font-bold text-white">
-              Like
+            <button
+              onClick={() =>
+                handleSaveClick(recipe_id, JSON.parse(sessionData).user.email)
+              }
+              className="hover:bg-opacity-80 rounded-full bg-red-600 tracking-wide w-fit h-fit py-2 px-4 font-bold text-white"
+            >
+              Save
             </button>
           </div>
           <div className="pt-2">

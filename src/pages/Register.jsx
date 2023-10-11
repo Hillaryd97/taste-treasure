@@ -84,19 +84,19 @@ const Register = () => {
           <h3 className="font-playfair-display font-bold text-3xl pb-2 md:pt-12 pt-4">
             Register
           </h3>
-          <p className="text-gray-500 font-bold">
+          <p className="text-gray-500 font-bold z-50">
             Connect with <span className="text-primary">friends</span> and
             exchange recipes!
           </p>
           {registrationSuccess && (
-            <div className="text-green-500 mt-4">
+            <div className="text-green-500 mt-4 z-50 text-center bg-white md:relative lg:top-0 absolute font-semibold top-[6rem]">
               Registration successful! Please check your email for the
               verification link.
             </div>
           )}
 
           <form
-            className="flex flex-col w-2/5 lg:w-2/5 w-full z-30 bg-background p-16 rounded-md shadow-md border-t border-t-primary mt-8 "
+            className="flex flex-col lg:w-2/5 w-full z-30 bg-background p-16 rounded-md shadow-md border-t border-t-primary mt-8 "
             onSubmit={handleSubmit}
           >
             <div className="flex flex-col space-y-4">

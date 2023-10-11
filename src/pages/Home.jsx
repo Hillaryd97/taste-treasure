@@ -55,7 +55,7 @@ const Home = (props) => {
   useEffect(() => {
     // Fetch recipes data from the "recipes" table
     async function fetchRecipes() {
-      const { data, error } = await supabase.from("userRecipes").select("*"); // You can specify columns you want to select here
+      const { data, error } = await supabase.from("userRecipes").select("*").order('created_at', { ascending: false }); // You can specify columns you want to select here
 
       if (error) {
         console.error("Error fetching recipes:", error);
@@ -66,6 +66,7 @@ const Home = (props) => {
 
     fetchRecipes();
   }, []); // Run this effect once on component mount
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResultsVisible, setSearchResultsVisible] = useState(false);
   const fetchRandomRecipes = async () => {
@@ -542,9 +543,9 @@ const Home = (props) => {
                                     .split("\n")
                                     .map((description, index) => {
                                       if (index === 0) {
-                                        if (description.length > 120) {
+                                        if (description.length > 140) {
                                           return (
-                                            description.slice(0, 120) + "..."
+                                            description.slice(0, 140) + "..."
                                           );
                                         } else {
                                           return description;

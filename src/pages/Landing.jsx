@@ -43,11 +43,17 @@ const Landing = () => {
           </p>
         </div>
         <div className="md:pt-5 pt-2">
+          {/* <Link
+            to={"/login"}
+            className=" bg-primary px-6 py-3 w-fit font-bold rounded-full text-white hover:bg-opacity-80 duration-300"
+          >
+            ADD RECIPES
+          </Link> */}
           <Link
             to={"/login"}
             className="bg-primary px-6 py-3 w-fit font-bold rounded-full text-white hover:bg-opacity-80 duration-300"
           >
-            ADD RECIPES
+            EXPLORE
           </Link>
         </div>
       </div>
@@ -81,9 +87,9 @@ const Landing = () => {
           <div className="pr-24 z-10">
             <Link
               to={"/home"}
-              className="underline font-bold text-primary md:bg-transparent md:p-0 bg-white p-1"
+              className="underline font-bold text-primary md:bg-transparent md:p-0  p-1"
             >
-              EXPLORE <span className="md:block hidden">RECIPES</span>
+               <span className="invisible">RECIPES</span>
             </Link>
           </div>
         </div>

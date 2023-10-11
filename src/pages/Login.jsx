@@ -54,7 +54,7 @@ const Login = () => {
       } else {
         console.log("User logged in successfully:", data);
         handleSuccessfulLogin(data); // Save user data in sessionStorage
-        navigate("/home"); // Redirect to the home page
+        navigate("/add-recipe"); // Redirect to the add recipe page
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -85,7 +85,7 @@ const Login = () => {
           <h3 className="font-playfair-display font-bold text-3xl pb-2 md:pt-12 pt-4">
             Login
           </h3>
-          <p className="text-gray-500 font-bold">
+          <p className="text-gray-500 font-bold z-50">
             Connect with <span className="text-primary">friends</span> and
             exchange recipes!
           </p>
