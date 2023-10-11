@@ -50,7 +50,7 @@ const Landing = () => {
             ADD RECIPES
           </Link> */}
           <Link
-            to={"/login"}
+            to={"/home"}
             className="bg-primary px-6 py-3 w-fit font-bold rounded-full text-white hover:bg-opacity-80 duration-300"
           >
             EXPLORE
