@@ -6,14 +6,13 @@ const IngredientCard = () => {
   const ingredients = [
     {
       id: 1,
-      name: "Tomatoes",
-      quick_facts: "Rich in vitamin C, commonly used in salads and sauces.",
-      fun_facts:
-        "Tomatoes are technically berries! They're also known for their umami flavor.",
+      name: "Strawberries",
+      quick_facts: "Sweet and juicy, excellent in desserts and smoothies.",
+      fun_facts: "Strawberries are the only fruit with seeds on the outside.",
       recipe_ideas: [
-        "Classic Tomato Soup",
-        "Caprese Salad",
-        "Spaghetti Pomodoro",
+        "Strawberry Shortcake",
+        "Berry Smoothie",
+        "Strawberry Jam",
       ],
     },
     {
@@ -25,13 +24,14 @@ const IngredientCard = () => {
     },
     {
       id: 3,
-      name: "Strawberries",
-      quick_facts: "Sweet and juicy, excellent in desserts and smoothies.",
-      fun_facts: "Strawberries are the only fruit with seeds on the outside.",
+      name: "Tomatoes",
+      quick_facts: "Rich in vitamin C, commonly used in salads and sauces.",
+      fun_facts:
+        "Tomatoes are technically berries! They're also known for their umami flavor.",
       recipe_ideas: [
-        "Strawberry Shortcake",
-        "Berry Smoothie",
-        "Strawberry Jam",
+        "Classic Tomato Soup",
+        "Caprese Salad",
+        "Spaghetti Pomodoro",
       ],
     },
     {
@@ -299,7 +299,7 @@ const IngredientCard = () => {
       setCurrentIngredientIndex(
         (prevIndex) => (prevIndex + 1) % ingredientCount
       );
-    }, 28800000);
+    }, 3600000);
 
     // Clean up the interval when the component unmounts.
     return () => {
@@ -312,7 +312,7 @@ const IngredientCard = () => {
   return (
     <div>
       {currentIngredient && (
-         // Check if there's a currentIngredient
+        // Check if there's a currentIngredient
         <div key={currentIngredient.id}>
           <div className="pt-2 px-3">
             <h4 className="font-semibold text-lg text-center uppercase text-primary">
@@ -341,4 +341,3 @@ const IngredientCard = () => {
 };
 
 export default IngredientCard;
-
